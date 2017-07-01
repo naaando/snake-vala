@@ -3,16 +3,9 @@ public class Player : Object, Drawable {
     const int WALK_SPEED = 20;
     SDL.Video.Rect body;
 
-    public Player () {
-        RendererManager.getInstance ().handler.key_pressed.connect (process_event);
-        body = { (RendererManager.SCREEN_WIDTH/2)-32, (RendererManager.SCREEN_HEIGHT/2)-32, 32, 32 };
-        /* Draft
-        if user press up
-            y++;
-        if user press down
-            y--;
-        ...
-        */
+    public Player (Scene scene) {
+        scene.input_handler.key_pressed.connect (process_event);
+        body = { (GameEngine.SCREEN_WIDTH/2)-32, (GameEngine.SCREEN_HEIGHT/2)-32, 32, 32 };
     }
 
     public virtual void draw (SDL.Video.Renderer renderer) {
