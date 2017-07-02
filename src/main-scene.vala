@@ -1,7 +1,21 @@
 
 public class MainScene : Scene {
-    public MainScene () {
-        drawables.add (new Player (this));
-        // drawables.add (new Spawner ());
+    Player player;
+    Spawner spawner;
+
+    public MainScene (GameEngine engine) {
+        base (engine);
+        player = new Player (this);
+        spawner = new Spawner (this);
+
+        drawables.add (player);
+        drawables.add (spawner);
+    }
+
+    public override void update () {
+        base.update ();
+        if (player.collider.collide(spawner.collider)) {
+            print ("Colliding\n");
+        }
     }
 }

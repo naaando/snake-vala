@@ -1,16 +1,18 @@
 
-
-
 public class InputManager : Object {
     public signal void key_pressed (int key);
+    GameEngine game_engine;
+
+    public InputManager (GameEngine engine) {
+        game_engine = engine;
+    }
 
     public void process_events () {
         SDL.Event event;
         while (SDL.Event.poll (out event) != 0) {
             switch (event.type) {
                 case SDL.EventType.QUIT:
-                    // GameEngine.done = true;
-                    SDL.quit ();
+                    game_engine.done = true;
                     break;
                 case SDL.EventType.KEYDOWN:
                     on_keyboard_event (event.key);
@@ -21,9 +23,9 @@ public class InputManager : Object {
     }
 
     void on_keyboard_event (SDL.KeyboardEvent event) {
-        // if (is_alt_enter (event.keysym)) {
-        //     GameEngine.set_fullscreen (true);
-        // }
+        if (is_alt_enter (event.keysym)) {
+            game_engine.set_fullscreen (true);
+        }
 
         key_pressed (event.keysym.sym);
     }
