@@ -12,21 +12,20 @@ public class Spawner : Object, Drawable {
         food = { (int) game_engine.random_x (), (int) game_engine.random_y (), 16, 16 };
         collider = new BoundingBox (16, 16);
 
-		var timer = new SDL.Timer (SpawnTime, reset);
+		var timer = new SDL.Timer (SpawnTime, respawn);
 	}
 
 	public virtual void draw (SDL.Video.Renderer renderer) {
-		renderer.set_draw_color (255, 255, 0, 0);
+		renderer.set_draw_color (0x7f, 0xb8, 0x00, 0);
 		renderer.fill_rect (food);
 
         collider.x = food.x;
         collider.y = food.y;
 	}
 
-	uint32 reset () {
+    public uint32 respawn () {
 		food.x = (int) game_engine.random_x ();
 		food.y = (int) game_engine.random_y ();
 		return SpawnTime;
 	}
-
 }
