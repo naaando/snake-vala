@@ -1,6 +1,0 @@
-[submodule "vapi"]
-	path = vapi
-	url = git@github.com:naaando/sdl2-vapi.git
-[submodule "sdl2-vapi"]
-	path = sdl2-vapi
-	url = git@github.com:naaando/sdl2-vapi.git
