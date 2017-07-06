@@ -7,6 +7,7 @@ sources = files (
   'Core/texture.vala',
   'Core/Physics/i-collider.vala',
   'Core/Physics/bounding-box.vala',
+  'Core/Text/label.vala',
   'main-scene.vala',
   'main.vala',
   'player.vala',

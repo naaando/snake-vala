@@ -15,6 +15,8 @@ public class GameEngine : Object {
         // scenes = new Gee.ArrayList<Scene> ();
 
         SDL.init (SDL.InitFlag.EVERYTHING|SDLImage.InitFlags.ALL);
+        SDLTTF.init ();
+
         window = new SDL.Video.Window (title, SDL.Video.Window.POS_CENTERED, SDL.Video.Window.POS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL.Video.WindowFlags.RESIZABLE);
         window.show ();
 
@@ -23,6 +25,7 @@ public class GameEngine : Object {
 
     ~GameEngine () {
         SDL.quit ();
+        SDLTTF.quit ();
     }
 
     public void run (Scene? scene = null) {

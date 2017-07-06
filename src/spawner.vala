@@ -11,8 +11,8 @@ public class Spawner : Object, Drawable {
 
         food = { (int) game_engine.random_x (), (int) game_engine.random_y (), 16, 16 };
         collider = new BoundingBox (16, 16);
-
-		var timer = new SDL.Timer (SpawnTime, respawn);
+        // TODO : Spawn special food over time
+		// var timer = new SDL.Timer (SpawnTime, respawn);
 	}
 
 	public virtual void draw (SDL.Video.Renderer renderer) {

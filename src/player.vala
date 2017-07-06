@@ -1,21 +1,20 @@
 
 public class Player : Object, Drawable {
-    const int SNAKE_SIZE = 16;
+    public const int SNAKE_SIZE = 16;
     // in pixels
 
     Direction walk_direction;
-    SDL.Video.Rect[] snake;
+    SnakeBody[] snake;
 
+    public BoundingBox collider {get; private set;}
+    public int score {get; private set;}
     int counter;
     int walk_speed = 10;
-    int score;
-
-    public BoundingBox collider {get; set;}
 
     public Player (Scene scene) {
         scene.input_handler.key_pressed.connect (process_event);
-        snake += SDL.Video.Rect () { x = (GameEngine.SCREEN_WIDTH/2)-SNAKE_SIZE, y = (GameEngine.SCREEN_HEIGHT/2)-SNAKE_SIZE, w = SNAKE_SIZE, h = SNAKE_SIZE };
-        collider = new BoundingBox (SNAKE_SIZE, SNAKE_SIZE);
+        snake += new SnakeBody ((GameEngine.SCREEN_WIDTH+SNAKE_SIZE)/2,(GameEngine.SCREEN_HEIGHT+SNAKE_SIZE)/2);
+        collider = snake[0].collider;
     }
 
     public void level_up () {
@@ -29,6 +28,13 @@ public class Player : Object, Drawable {
             counter = 0;
             move ();
         }
+
+        foreach (var body in snake) {
+            if (body != snake[0] && body.collider.collide (snake[0].collider)) {
+                print ("I ate my self, how dumb am I? heheheh\n");
+            }
+        }
+
         counter++;
     }
 
@@ -37,8 +43,7 @@ public class Player : Object, Drawable {
         update ();
 
         foreach (var b in snake) {
-            renderer.set_draw_color (0xFF, 0xB4, 0x00, 0);
-            renderer.fill_rect (b);
+            b.draw (renderer);
         }
 
     }
@@ -93,9 +98,6 @@ public class Player : Object, Drawable {
         snake[0].y = (snake[0].y < 0) ? GameEngine.SCREEN_HEIGHT : snake[0].y;
         snake[0].y = (snake[0].y > GameEngine.SCREEN_HEIGHT) ? 0 : snake[0].y;
 
-        collider.x = snake[0].x;
-        collider.y = snake[0].y;
-
         for (int i = 1; i < snake.length; i++) {
             int old_x = snake[i].x, old_y = snake[i].y;
             snake[i].x = x;
@@ -106,7 +108,7 @@ public class Player : Object, Drawable {
     }
 
     void add_tail () {
-        snake += SDL.Video.Rect () { x = -SNAKE_SIZE, y = -SNAKE_SIZE, w = SNAKE_SIZE, h = SNAKE_SIZE };
+        snake += new SnakeBody ();
     }
 }
 
@@ -115,4 +117,39 @@ enum Direction {
     DOWN,
     LEFT,
     RIGHT
+}
+
+class SnakeBody : Object {
+    const int SNAKE_SIZE = Player.SNAKE_SIZE;
+    SDL.Video.Rect shape;
+    public BoundingBox collider {get; set;}
+
+    public int x {
+        get {
+            return shape.x;
+        }
+        set {
+            shape.x = value;
+            collider.x = shape.x;
+        }
+    }
+    public int y {
+        get {
+            return shape.y;
+        }
+        set {
+            shape.y = value;
+            collider.y = shape.y;
+        }
+    }
+
+    public SnakeBody (int x = 0, int y = 0) {
+        shape = SDL.Video.Rect () { x = x-SNAKE_SIZE, y = y-SNAKE_SIZE, w = SNAKE_SIZE, h = SNAKE_SIZE };
+        collider = new BoundingBox (SNAKE_SIZE, SNAKE_SIZE);
+    }
+
+    public void draw (SDL.Video.Renderer renderer) {
+        renderer.set_draw_color (0xFF, 0xB4, 0x00, 0);
+        renderer.fill_rect (shape);
+    }
 }
