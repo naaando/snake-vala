@@ -8,16 +8,16 @@ add_project_arguments(['--vapidir', join_paths(meson.current_source_dir(), 'vapi
 
 glib = dependency('glib-2.0')
 gobject = dependency('gobject-2.0')
-gee = dependency('gee-0.8')
+# gee = dependency('gee-0.8')
 
 sdl2_lib = meson.get_compiler('c').find_library('SDL2')
 sdl2_vapi = meson.get_compiler('vala').find_library('sdl2', dirs: join_paths(meson.current_source_dir(), 'vapi'))
 sdl2_dep = declare_dependency(dependencies: [ sdl2_lib, sdl2_vapi])
 
 
-sdl2gfx_lib = meson.get_compiler('c').find_library('SDL2_gfx')
-sdl2gfx_vapi = meson.get_compiler('vala').find_library('sdl2-gfx', dirs: join_paths(meson.current_source_dir(), 'vapi'))
-sdl2gfx_dep = declare_dependency(dependencies: [ sdl2gfx_lib, sdl2gfx_vapi])
+# sdl2gfx_lib = meson.get_compiler('c').find_library('SDL2_gfx')
+# sdl2gfx_vapi = meson.get_compiler('vala').find_library('sdl2-gfx', dirs: join_paths(meson.current_source_dir(), 'vapi'))
+# sdl2gfx_dep = declare_dependency(dependencies: [ sdl2gfx_lib, sdl2gfx_vapi])
 
 sdl2ttf_lib = meson.get_compiler('c').find_library('SDL2_ttf')
 sdl2ttf_vapi = meson.get_compiler('vala').find_library('sdl2-ttf', dirs: join_paths(meson.current_source_dir(), 'vapi'))
@@ -36,5 +36,7 @@ subdir ('src')
 
 executable('snake-vala',
             sources,
-            dependencies : [gee, glib, gobject, sdl2_dep, sdl2gfx_dep, sdl2ttf_dep, sdl2image_dep, sdl2mixer_dep]
+            dependencies : [glib, gobject, sdl2_dep, sdl2ttf_dep, sdl2image_dep, sdl2mixer_dep]
 )
+
+# sdl2gfx_dep
