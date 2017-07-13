@@ -15,7 +15,6 @@ public class GameEngine : Object {
         print ("Starting engine\n");
 
         SDL.init (SDL.InitFlag.EVERYTHING|SDLImage.InitFlags.ALL);
-        SDL.Audio.init ("pulseaudio");
         SDLTTF.init ();
 
         window = new SDL.Video.Window (title, SDL.Video.Window.POS_CENTERED, SDL.Video.Window.POS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL.Video.WindowFlags.RESIZABLE);
