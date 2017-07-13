@@ -2,8 +2,8 @@
 public class Scene : Object, GameObject {
     public GameEngine game_engine {get; protected set;}
     public InputManager input_handler {get; protected set;}
-    protected Gee.ArrayList<Drawable> drawables;
-    protected SDL.Video.Renderer renderer;
+    protected GLib.Array<Drawable> drawables;
+    protected unowned SDL.Video.Renderer renderer;
 
     public uint8 r {get;set;default=0;}
     public uint8 b {get;set;default=0;}
@@ -11,13 +11,10 @@ public class Scene : Object, GameObject {
     public bool done {get; set;}
 
     public Scene (GameEngine engine) {
-        drawables = new Gee.ArrayList<Drawable> ();
+        drawables = new GLib.Array<Drawable> ();
         game_engine = engine;
+        renderer = engine.renderer;
         input_handler = engine.input_handler;
-    }
-
-    public void load (SDL.Video.Window window) {
-        renderer = SDL.Video.Renderer.create (window, -1, SDL.Video.RendererFlags.ACCELERATED | SDL.Video.RendererFlags.PRESENTVSYNC);
     }
 
     public virtual void update () {
@@ -28,8 +25,8 @@ public class Scene : Object, GameObject {
         renderer.clear ();
         renderer.set_draw_color (r, g, b, 0);
 
-        foreach (var drawable in drawables) {
-            drawable.draw (renderer);
+        for (int i = 0; i < drawables.length; i++) {
+            drawables.index(i).draw (renderer);
         }
 
         renderer.set_draw_color (r, g, b, 0);

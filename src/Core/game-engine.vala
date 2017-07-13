@@ -5,19 +5,21 @@ public class GameEngine : Object {
     public const int SCREEN_BPP = 32;
     public const int DELAY = 10;
     public InputManager input_handler {get; set;}
-    // public Gee.ArrayList scenes {get;set;}
+    public SDL.Video.Renderer renderer;
 
     public bool done {get;set;}
 
     SDL.Video.Window window;
 
     public GameEngine (string title) {
-        // scenes = new Gee.ArrayList<Scene> ();
+        print ("Starting engine\n");
 
         SDL.init (SDL.InitFlag.EVERYTHING|SDLImage.InitFlags.ALL);
+        SDL.Audio.init ("pulseaudio");
         SDLTTF.init ();
 
         window = new SDL.Video.Window (title, SDL.Video.Window.POS_CENTERED, SDL.Video.Window.POS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL.Video.WindowFlags.RESIZABLE);
+        renderer = SDL.Video.Renderer.create (window, -1, SDL.Video.RendererFlags.ACCELERATED | SDL.Video.RendererFlags.PRESENTVSYNC);
         window.show ();
 
         input_handler = new InputManager (this);
@@ -29,7 +31,6 @@ public class GameEngine : Object {
     }
 
     public void run (Scene? scene = null) {
-        scene.load (window);
         game_loop (scene);
     }
 
