@@ -8,6 +8,7 @@ public class Player : Object, Drawable {
 
     public BoundingBox collider {get; private set;}
     public int score {get; private set;}
+    public bool dead {get;set;}
     int counter;
     int walk_speed = 10;
 
@@ -31,7 +32,7 @@ public class Player : Object, Drawable {
 
         foreach (var body in snake) {
             if (body != snake[0] && body.collider.collide (snake[0].collider)) {
-                print ("I ate my self, how dumb am I? heheheh\n");
+                dead = true;
             }
         }
 
@@ -67,7 +68,7 @@ public class Player : Object, Drawable {
                 walk_direction = (walk_direction != Direction.LEFT) ? Direction.RIGHT : walk_direction;
                 break;
             case SDL.Input.Keycode.z:
-                add_tail ();
+                dead = true;
                 break;
             case SDL.Input.Keycode.x:
                 print (snake.length.to_string ()+"\n");
@@ -105,6 +106,11 @@ public class Player : Object, Drawable {
             x = old_x;
             y = old_y;
         }
+    }
+
+    void die () {
+        print ("I died\n");
+        score = 0;
     }
 
     void add_tail () {
@@ -149,7 +155,7 @@ class SnakeBody : Object {
     }
 
     public void draw (SDL.Video.Renderer renderer) {
-        renderer.set_draw_color (0xFF, 0xB4, 0x00, 0);
+        renderer.set_draw_color (0x1F, 0x35, 0x25, 0);
         renderer.fill_rect (shape);
     }
 }
