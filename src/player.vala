@@ -5,6 +5,7 @@ public class Player : Object, Drawable {
 
     Direction walk_direction;
     SnakeBody[] snake;
+    GameEngine game_engine;
 
     public BoundingBox collider {get; private set;}
     public int score {get; private set;}
@@ -13,8 +14,9 @@ public class Player : Object, Drawable {
     int walk_speed = 10;
 
     public Player (Scene scene) {
+        game_engine = scene.game_engine;
         scene.input_handler.key_pressed.connect (process_event);
-        snake += new SnakeBody ((GameEngine.SCREEN_WIDTH+SNAKE_SIZE)/2,(GameEngine.SCREEN_HEIGHT+SNAKE_SIZE)/2);
+        snake += new SnakeBody ((game_engine.screen_width+SNAKE_SIZE)/2,(game_engine.screen_height+SNAKE_SIZE)/2);
         collider = snake[0].collider;
     }
 
@@ -94,10 +96,10 @@ public class Player : Object, Drawable {
                 break;
         }
 
-        snake[0].x = (snake[0].x < 0) ? GameEngine.SCREEN_WIDTH : snake[0].x;
-        snake[0].x = (snake[0].x > GameEngine.SCREEN_WIDTH) ? 0 : snake[0].x;
-        snake[0].y = (snake[0].y < 0) ? GameEngine.SCREEN_HEIGHT : snake[0].y;
-        snake[0].y = (snake[0].y > GameEngine.SCREEN_HEIGHT) ? 0 : snake[0].y;
+        snake[0].x = (snake[0].x < 0) ? game_engine.screen_width : snake[0].x;
+        snake[0].x = (snake[0].x > game_engine.screen_width) ? 0 : snake[0].x;
+        snake[0].y = (snake[0].y < 0) ? game_engine.screen_height : snake[0].y;
+        snake[0].y = (snake[0].y > game_engine.screen_height) ? 0 : snake[0].y;
 
         for (int i = 1; i < snake.length; i++) {
             int old_x = snake[i].x, old_y = snake[i].y;

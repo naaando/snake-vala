@@ -10,7 +10,7 @@ public class MainScene : Scene {
         base.set_background_color (0xE0, 0xB8, 0x69);
         input_handler.key_pressed.connect (process_event);
         score = new Label ("Score : 0");
-        score.pos = new Vector2 (GameEngine.SCREEN_WIDTH/2-125, 0);
+        score.pos = new Vector2 (game_engine.screen_width/2-125, 0);
         score.scale = 2;
         player = new Player (this);
         spawner = new Spawner (this);
@@ -43,6 +43,9 @@ public class MainScene : Scene {
                 break;
             case SDL.Input.Keycode.v:
                 music.playing = !music.playing;
+                break;
+            case SDL.Input.Keycode.f:
+                print (game_engine.screen_width.to_string ());
                 break;
         }
     }

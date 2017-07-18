@@ -1,7 +1,23 @@
 
 public class GameEngine : Object {
-    public const int SCREEN_WIDTH = 640;
-    public const int SCREEN_HEIGHT = 480;
+    public int screen_width {
+        get {
+            int x;
+            window.get_size (out x, null);
+            return x;
+        }
+    }
+
+    public int screen_height {
+        get {
+            int y;
+            window.get_size (null, out y);
+            return y;
+        }
+    }
+
+    public const int DEF_SCREEN_WIDTH = 640;
+    public const int DEF_SCREEN_HEIGHT = 480;
     public const int SCREEN_BPP = 32;
     public const int DELAY = 10;
     public InputManager input_handler {get; set;}
@@ -17,7 +33,7 @@ public class GameEngine : Object {
         SDL.init (SDL.InitFlag.EVERYTHING|SDLImage.InitFlags.ALL);
         SDLTTF.init ();
 
-        window = new SDL.Video.Window (title, SDL.Video.Window.POS_CENTERED, SDL.Video.Window.POS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL.Video.WindowFlags.RESIZABLE);
+        window = new SDL.Video.Window (title, SDL.Video.Window.POS_CENTERED, SDL.Video.Window.POS_CENTERED, DEF_SCREEN_WIDTH, DEF_SCREEN_HEIGHT, SDL.Video.WindowFlags.RESIZABLE);
         renderer = SDL.Video.Renderer.create (window, -1, SDL.Video.RendererFlags.ACCELERATED | SDL.Video.RendererFlags.PRESENTVSYNC);
         window.show ();
 
@@ -44,12 +60,12 @@ public class GameEngine : Object {
     }
 
     public uint32 random_x () {
-        var random = Random.int_range (0, SCREEN_WIDTH);
+        var random = Random.int_range (0, screen_width);
         return random;
     }
 
     public uint32 random_y () {
-        return Random.int_range (0, SCREEN_HEIGHT);
+        return Random.int_range (0, screen_height);
     }
 
     void game_loop (Scene scene) {
