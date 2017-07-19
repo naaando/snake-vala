@@ -2,9 +2,33 @@
 public class Label : Object, Drawable {
     int size;
     string _text;
+    Vector2 _pos;
+    float _scale;
+    SDL.Video.Texture texture;
+    SDL.Video.Color color;
+    SDLTTF.Font _font;
 
-    public Vector2 pos {get; set;default = new Vector2 (0, 0);}
-    public float scale {get;set;default=1;}
+    public Vector2 pos {
+        get {
+            return _pos;
+        }
+        set {
+            _pos = value;
+            recalculate ();
+        }
+        default = new Vector2 (0, 0);
+    }
+
+    public float scale {
+        get {
+            return _scale;
+        }
+        set {
+            _scale = value;
+            recalculate ();
+        }
+        default=1;
+    }
 
     public string text {
         get {
@@ -12,7 +36,7 @@ public class Label : Object, Drawable {
         }
         set {
             _text = value;
-            texture = null;
+            recalculate ();
         }
     }
 
@@ -22,13 +46,18 @@ public class Label : Object, Drawable {
         }
         set {
             _font = new SDLTTF.Font (value, size);
+            recalculate ();
         }
     }
 
-    SDL.Video.Texture texture;
+    public enum Alignment {
+        LEFT,
+        CENTER,
+        RIGHT,
+        JUSTIFY
+    }
 
-    SDL.Video.Color color;
-    SDLTTF.Font _font;
+    public Alignment alignment {get;set;default = Alignment.LEFT;}
 
     public Label (string text, int size = 12, SDL.Video.Color? color = null) {
         this.text = text;
@@ -49,7 +78,16 @@ public class Label : Object, Drawable {
         return _font.render (text, color);
     }
 
-    // public Texture? to_texture () {
-    //     return
-    // }
+    void recalculate () {
+        texture = null;
+
+        switch (alignment) {
+            case Alignment.CENTER:
+                _pos = new Vector2 (_pos.x-(int)((scale*size*text.length)/2), _pos.y);
+                break;
+            case Alignment.RIGHT:
+                _pos = new Vector2 (_pos.x-(int)(scale*size*text.length), _pos.y);
+                break;
+        }
+    }
 }
